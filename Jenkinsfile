@@ -11,7 +11,6 @@ pipeline {
     stage('Linting Files') {
         steps {
             sh 'tidy -q -e *.html'
-            sh 'hadolint Dockerfile'
         }
     }
 
