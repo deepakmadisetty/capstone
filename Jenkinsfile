@@ -10,7 +10,7 @@ pipeline {
     stage('Linting Files') {
         steps {
             sh 'tidy -q -e *.html'
-            sh 'docker run --rm -i hadolint/hadolint Dockerfile'
+            sh 'docker run --rm -i hadolint/hadolint < Dockerfile'
         }
     }
 
