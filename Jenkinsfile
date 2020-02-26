@@ -18,7 +18,7 @@ pipeline {
         steps {
             sh 'docker image build -t deepakmadisetty/capstone .'
             sh 'docker image ls'
-            sh 'docker run --name deepakmadisetty/capstone -p 8080:80 -d deepakmadisetty/capstone'
+            sh 'docker run --name deepakmadisetty/capstone -p 8000:80 -d deepakmadisetty/capstone'
         }
     }
 
