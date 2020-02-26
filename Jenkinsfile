@@ -23,6 +23,22 @@ pipeline {
         }
     }
 
+    stage('Check Availabilty')
+    {
+      steps {
+        echo 'Checking app status'
+        sh 'curl -Is http://localhost:8000'
+      }
+    }
+
+    stage('Stop Container')
+    {
+      steps {
+        sh 'docker stop capstone'
+        sh 'docker rm capstone'
+      }
+    }
+
     stage('Create Kubernetes Cluster') {
         steps {
           echo 'Create Kubernetes Cluster'
