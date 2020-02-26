@@ -3,28 +3,29 @@ pipeline {
   stages {
     stage('Check Environment') {
         steps {
-            sh 'echo "Hello World"'
-            sh 'pwd'
-            sh 'ls -lah'
+          echo 'Check Prerequisites'
+          sh 'docker -v'
         }
     }
     stage('Linting Files') {
         steps {
             sh 'tidy -q -e *.html'
+            sh 'docker run --rm -i hadolint/hadolint Dockerfile'
         }
     }
 
     stage('Build Docker Image') {
         steps {
+            echo 'Building Docker Image'
             sh 'docker image build -t deepakmadisetty/capstone .'
             sh 'docker image ls'
             sh 'docker run --name capstone -p 8000:80 -d deepakmadisetty/capstone'
         }
     }
 
-    stage('Check Availabilty') {
+    stage('Create Kubernetes Cluster') {
         steps {
-          sh 'curl -Is http://ec2-54-245-28-27.us-west-2.compute.amazonaws.com:8080 | head -1'
+          echo 'Create Kubernetes Cluster'
         }
     }
   }
