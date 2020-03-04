@@ -20,15 +20,9 @@ pipeline {
             sh 'docker image build -t deepakmadisetty/capstone .'
             sh 'docker image ls'
             sh 'docker run --name capstone -p 8000:80 -d deepakmadisetty/capstone'
+            echo 'Checking app status'
+            sh 'curl -Is http://localhost:8000'
         }
-    }
-
-    stage('Check Availabilty')
-    {
-      steps {
-        echo 'Checking app status'
-        sh 'curl -Is http://localhost:8000'
-      }
     }
 
     stage('Stop Container')

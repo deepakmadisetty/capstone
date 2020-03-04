@@ -1,0 +1,70 @@
+Description: >
+    Deepak Madisetty / Udacity NanoDegree Capstone Project
+   
+Parameters:
+
+    StackName:
+        Description: A stack name that will be prefixed to resource names
+        Type: String
+
+Resources:
+  EKSCluster:
+    Type: 'AWS::EKS::Cluster'
+    Properties:
+      Name: capstone-eks-cluster
+      Version: '1.14'
+      RoleArn: 
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue: !Sub ${StackName}-SG
+        SubnetIds:
+          - Fn::ImportValue: !Sub "${StackName}-PUB1-SN"
+          - Fn::ImportValue: !Sub "${StackName}-PUB2-SN"
+          - Fn::ImportValue: !Sub "${StackName}-PRI1-SN"
+          - Fn::ImportValue: !Sub "${StackName}-PRI2-SN"
+  
+          NodeInstanceRole:
+            Type: "AWS::IAM::Role"
+            Properties:
+              AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                  - Effect: Allow
+                    Principal:
+                      Service:
+                        - !FindInMap [ServicePrincipals, !Ref "AWS::Partition", ec2]
+                    Action:
+                      - "sts:AssumeRole"
+              ManagedPolicyArns:
+                - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+                - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEKS_CNI_Policy"
+                - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+              Path: /
+    
+  EKSNodeGroup:
+    Type: 'AWS::EKS::Nodegroup'
+    Properties:
+      ClusterName: capstone-eks-cluster
+      NodeRole: 'arn:aws:iam::012345678910:role/eksInstanceRole'
+      ScalingConfig:
+        MinSize: 1
+        DesiredSize: 2
+        MaxSize: 3
+      Labels:
+        Key1: Value1
+        Key2: Value2
+      Subnets:
+        - subnet-6782e71e
+        - subnet-e7e761ac
+
+          
+Outputs:
+  EKSCluster: 
+    Description: EKS Cluster ID
+    Value: !Ref EKSCluster
+    Export: 
+      Name: !Sub ${StackName}-EKSCluster
+  
+  NodeInstanceRole:
+    Description: The node instance role
+    Value: !GetAtt NodeInstanceRole.Arn
