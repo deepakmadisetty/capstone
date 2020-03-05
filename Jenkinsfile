@@ -38,10 +38,12 @@ pipeline {
         }
     }
   }
-    stage('Stop Container') {
+  
+  stage('Stop Container') {
       steps {
         sh 'docker stop capstone'
         sh 'docker rm capstone'
       }
     }
+  }
 }
