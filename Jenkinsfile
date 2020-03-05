@@ -30,12 +30,14 @@ pipeline {
           echo 'Creating Kubernetes Cluster'
           withAWS(region:'us-west-2',credentials:'awscreds') {
             sh "aws eks --region us-west-2 update-kubeconfig --name capstone-eks-cluster"
+            sh "echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc"
+            sh "kubectl version --short --client"
             sh "kubectl apply -f kubernetes/config/eks-auth-cm.yaml"
             sh "kubectl apply -f kubernetes-confs/eks-deployment.yaml"
-           sh "kubectl apply -f kubernetes-confs/eks-service.yaml"
-           sh "kubectl get nodes"
-           sh "kubectl get pods"
-           sh "kubectl get svc service-capstone -o yaml"
+            sh "kubectl apply -f kubernetes-confs/eks-service.yaml"
+            sh "kubectl get nodes"
+            sh "kubectl get pods"
+            sh "kubectl get svc service-capstone -o yaml"
           }
         }
     }
