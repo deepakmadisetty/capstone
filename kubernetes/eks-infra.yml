@@ -1,5 +1,5 @@
 Description: >
-    Deepak Madisetty / Udacity NanoDegree High Availabilty Web App Project
+    Deepak Madisetty / Udacity NanoDegree Capstone Project
     
     This template deploys a VPC, with a pair of public and private subnets spread 
     across two Availabilty Zones. It deploys an Internet Gateway, with a default 
@@ -200,7 +200,7 @@ Resources:
             RouteTableId: !Ref PrivateRouteTable2
             SubnetId: !Ref PrivateSubnet2
 
-    EKSClusterSecurityGroup:
+    ControlPlaneSecurityGroup:
         Type: AWS::EC2::SecurityGroup
         Properties:
           GroupDescription: The security group of the cluster control plane
@@ -267,8 +267,9 @@ Outputs:
         Value: !Ref PrivateSubnet2
         Export:
           Name: !Sub ${StackName}-PRI2-SN
-    SecurityGroup:
-        Description: SecurityGroup for EKS Cluster Control Plane
-        Value:  !Ref EKSClusterSecurityGroup
-        Export:
-          Name: !Sub ${StackName}-SG
+
+    ControlPlaneSecurityGroup:
+      Description: SecurityGroup for EKS Cluster Control Plane
+      Value:  !Ref ControlPlaneSecurityGroup
+      Export:
+        Name: !Sub ${StackName}-CPSG

@@ -1,0 +1,14 @@
+[
+    {
+        "ParameterKey": "StackName",
+        "ParameterValue": "UdacityCapstoneProject"
+    },
+    {
+        "ParameterKey": "ClusterName",
+        "ParameterValue": "capstone-eks-cluster"
+    },
+    {
+        "ParameterKey": "NodeGroupName",
+        "ParameterValue": "capstone-eks-cluster-node-group"
+    }
+]
