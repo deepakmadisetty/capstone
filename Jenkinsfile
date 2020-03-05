@@ -37,13 +37,11 @@ pipeline {
           sh "kubectl get svc service-capstone -o yaml"
         }
     }
-  }
-  
   stage('Stop Container') {
-      steps {
-        sh 'docker stop capstone'
-        sh 'docker rm capstone'
-      }
+        steps {
+          sh 'docker stop capstone'
+          sh 'docker rm capstone'
+        }
     }
   }
 }
