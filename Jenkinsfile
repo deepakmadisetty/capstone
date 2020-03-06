@@ -1,24 +1,19 @@
 pipeline {
+  environment {
+    registry = "deepakmadisetty/capstone"
+    registryCredential = 'dockerhub'
+  }
+  
   agent any 
+  
   stages {
     stage('Check Environment') {
         steps {
           echo 'Check Prerequisites'
-          sh '''
-            docker -v
-            echo 'stopping containers from previous run'
-            var1="capstone"
-            var2=$(docker ps --format '{{.Names}}')
-            if [ "$var1" == "$var2" ]
-            then
-                $(docker stop capstone > /dev/null 2>&1)
-                $(docker rm capstone > /dev/null 2>&1)
-            else
-                echo 'capstone is not running. exiting block....'
-            fi
-            '''
+          sh 'docker -v'
         }
     }
+
     stage('Linting Files') {
         steps {
             sh 'tidy -q -e *.html'
@@ -26,18 +21,16 @@ pipeline {
         }
     }
 
-    stage('Build Docker Image') {
+    stage('Build, Deploy & Push Docker Image') {
         steps {
-            echo 'Building Docker Image'
-            sh 'docker image build -t deepakmadisetty/capstone .'
-            sh 'docker image ls'
-            sh 'docker run --name capstone -p 8000:80 -d deepakmadisetty/capstone'
-            echo 'Checking app status'
-            sh 'curl -Is http://localhost:8000'
+          dockerImage = docker.build registry
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
         }
     }
 
-  stage('Deploying the app to Kubernetes Cluster') {
+    stage('Deploying the app to Kubernetes Cluster') {
         steps {
           echo 'Creating Kubernetes Cluster'
           withAWS(region:'us-west-2',credentials:'awscreds') {
@@ -56,10 +49,17 @@ pipeline {
           }
         }
     }
-  stage('Clean Up') {
+
+    stage('Clean Up') {
         steps {
-          sh 'docker system prune'
+          sh '''
+          docker stop capstone
+          docker rm capstone
+          docker system prune
+          '''
         }
     }
+
   }
+
 }
