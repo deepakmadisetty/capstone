@@ -1,4 +1,7 @@
-Description: Amazon EKS Worker Nodes
+Description: >
+    Deepak Madisetty / Udacity NanoDegree Capstone Project
+    
+    Amazon EKS Worker Nodes
    
 Parameters:
     BootstrapArguments:

@@ -5,6 +5,7 @@ pipeline {
         steps {
           echo 'Check Prerequisites'
           sh 'docker -v'
+          echo 'stopping containers from previous run'
           sh 'docker stop capstone'
           sh 'docker rm capstone'
         }
@@ -27,26 +28,26 @@ pipeline {
         }
     }
 
-  stage('Create Kubernetes Cluster') {
+  stage('Deploying the app to Kubernetes Cluster') {
         steps {
           echo 'Creating Kubernetes Cluster'
           withAWS(region:'us-west-2',credentials:'awscreds') {
-            sh "aws eks --region us-west-2 update-kubeconfig --name capstone-eks-cluster"
-            echo 'Present Working Directory'
-            sh "pwd"
-            sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes/config/eks-auth-cm.yml"
-            sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes/config/eks-deployment.yml"
-            sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes/config/eks-service.yml"
-            sh "kubectl get nodes"
-            sh "kubectl get pods"
-            sh "kubectl get svc service-capstone -o yaml"
+            dir('./') {
+              sh '''aws eks --region us-west-2 update-kubeconfig --name capstone-eks-cluster'
+              echo 'Kubernetes Deployment'
+              kubectl apply -f kubernetes/config/eks-auth-cm.yml
+              kubectl apply -f kubernetes/config/eks-deployment.yml
+              kubectl apply -f kubernetes/config/eks-service.yml
+              kubectl get nodes
+              kubectl get pods
+              kubectl get svc service-capstone -o yaml'''
+            }
           }
         }
     }
-  stage('Stop Container') {
+  stage('Clean Up') {
         steps {
-          sh 'docker stop capstone'
-          sh 'docker rm capstone'
+          sh 'docker system prune'
         }
     }
   }
