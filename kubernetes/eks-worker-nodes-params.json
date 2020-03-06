@@ -9,6 +9,6 @@
     },
     {
         "ParameterKey": "NodeGroupName",
-        "ParameterValue": "capstone-eks-cluster-node-group"
+        "ParameterValue": "node-group"
     }
 ]

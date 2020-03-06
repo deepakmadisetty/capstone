@@ -30,6 +30,7 @@ pipeline {
           echo 'Creating Kubernetes Cluster'
           withAWS(region:'us-west-2',credentials:'awscreds') {
             sh "aws eks --region us-west-2 update-kubeconfig --name capstone-eks-cluster"
+            echo 'Present Working Directory'
             sh "pwd"
             sh "kubectl apply -f kubernetes/config/eks-auth-cm.yaml"
             sh "kubectl apply -f kubernetes-confs/eks-deployment.yaml"
