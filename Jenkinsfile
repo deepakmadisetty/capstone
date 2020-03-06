@@ -55,14 +55,8 @@ pipeline {
 
     stage('Clean Up') {
         steps {
-          sh '''
-          docker stop capstone
-          docker rm capstone
-          docker system prune
-          '''
+          sh 'docker system prune'
         }
     }
-
   }
-
 }
