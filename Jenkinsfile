@@ -34,9 +34,9 @@ pipeline {
             sh "aws eks --region us-west-2 update-kubeconfig --name capstone-eks-cluster"
             echo 'Present Working Directory'
             sh "pwd"
-            sh "kubectl apply -f kubernetes/config/eks-auth-cm.yaml"
-            sh "kubectl apply -f kubernetes-confs/eks-deployment.yaml"
-            sh "kubectl apply -f kubernetes-confs/eks-service.yaml"
+            sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes/config/eks-auth-cm.yaml"
+            sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes-confs/eks-deployment.yaml"
+            sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes-confs/eks-service.yaml"
             sh "kubectl get nodes"
             sh "kubectl get pods"
             sh "kubectl get svc service-capstone -o yaml"
