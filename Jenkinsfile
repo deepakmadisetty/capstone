@@ -11,7 +11,8 @@ pipeline {
             var2=$(docker ps --format '{{.Names}}')
             if [ "$var1" == "$var2" ]
             then
-                $(docker stop capstone && docker rm capstone > /dev/null 2>&1)
+                $(docker stop capstone > /dev/null 2>&1)
+                $(docker rm capstone > /dev/null 2>&1)
             else
                 echo 'capstone is not running. exiting block....'
             fi
