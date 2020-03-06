@@ -5,6 +5,8 @@ pipeline {
         steps {
           echo 'Check Prerequisites'
           sh 'docker -v'
+          docker stop capstone
+          docker rm capstone
         }
     }
     stage('Linting Files') {
