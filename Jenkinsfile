@@ -36,7 +36,7 @@ pipeline {
             sh "pwd"
             sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes/config/eks-auth-cm.yml"
             sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes/config/eks-deployment.yml"
-            sh "kubectl apply -f kubernetes-confs/eks-service.yml"
+            sh "kubectl apply -f /var/lib/jenkins/workspace/capstone_master/kubernetes/config/eks-service.yml"
             sh "kubectl get nodes"
             sh "kubectl get pods"
             sh "kubectl get svc service-capstone -o yaml"
