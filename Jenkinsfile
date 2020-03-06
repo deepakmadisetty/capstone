@@ -6,7 +6,7 @@ pipeline {
           echo 'Check Prerequisites'
           sh '''
             docker -v
-            echo 'stopping containers from previous run
+            echo 'stopping containers from previous run'
             var1="capstone"
             var2=$(docker ps --format '{{.Names}}')
             if [ "$var1" == "$var2" ]
