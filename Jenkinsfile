@@ -4,10 +4,18 @@ pipeline {
     stage('Check Environment') {
         steps {
           echo 'Check Prerequisites'
-          sh 'docker -v'
-          echo 'stopping containers from previous run'
-          sh 'docker stop capstone'
-          sh 'docker rm capstone'
+          sh '''
+            docker -v
+            echo 'stopping containers from previous run
+            var1="capstone"
+            var2=$(docker ps --format '{{.Names}}')
+            if [ "$var1" == "$var2" ]
+            then
+                $(docker stop capstone && docker rm capstone > /dev/null 2>&1)
+            else
+                echo 'capstone is not running. exiting block....'
+            fi
+            '''
         }
     }
     stage('Linting Files') {
