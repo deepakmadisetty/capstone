@@ -3,7 +3,7 @@ pipeline {
     registry = "deepakmadisetty/capstone"
     registryCredential = 'dockerhub'
   }
-  
+
   agent any 
   
   stages {
@@ -23,10 +23,13 @@ pipeline {
 
     stage('Build, Deploy & Push Docker Image') {
         steps {
-          dockerImage = docker.build registry
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+          script{
+            dockerImage = docker.build registry
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
           }
+          
         }
     }
 
