@@ -10,7 +10,7 @@ Working with CloudFormation to create & deploy clusters
 Building Kubernetes clusters
 Building Docker containers in pipelines
 
-## Refereces
+## References
 * https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-docker/
 * https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 * https://docs.aws.amazon.com/eks/latest/userguide/getting-started-console.html
