@@ -10,5 +10,13 @@
     {
         "ParameterKey": "NodeGroupName",
         "ParameterValue": "node-group"
+    },
+    {
+        "ParameterKey": "KeyName",
+        "ParameterValue": "webappkey"
+    },
+    {
+       "ParameterKey": "NodeImageId",
+       "ParameterValue": "ami-0907724389e8705d9"
     }
 ]

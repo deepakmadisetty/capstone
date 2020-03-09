@@ -1,10 +1,4 @@
-Description: >
-    Deepak Madisetty / Udacity NanoDegree Capstone Project
-    
-    This template deploys a VPC, with a pair of public and private subnets spread 
-    across two Availabilty Zones. It deploys an Internet Gateway, with a default 
-    route on the public subnets. It deploys a pair of NAT Gateways (one in each AZ), 
-    and default routes for them in the private subnets.
+Description: Udacity NanoDegree Capstone Project - VPC
 
 Parameters:
 
@@ -208,12 +202,18 @@ Resources:
 
 Outputs: 
 
-    VPC: 
+    VpcId: 
         Description: A reference to the created VPC
         Value: !Ref VPC
         Export:
           Name: !Sub ${StackName}-VPCID
 
+    SubnetIds:
+        Description: All subnets in the VPC
+        Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2, !Ref PrivateSubnet2, !Ref PrivateSubnet2 ] ]
+        Export: 
+            Name: !Sub ${StackName}-SNIDS
+    
     VPCPublicRouteTable:
         Description: Public Routing
         Value: !Ref PublicRouteTable
